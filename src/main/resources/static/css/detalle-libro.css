@@ -1,0 +1,176 @@
+.breadcrumb-small {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.breadcrumb-small a {
+    color: var(--sage-dark);
+    text-decoration: none;
+}
+
+.detail-layout {
+    display: grid;
+    grid-template-columns: minmax(230px, 340px) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+}
+
+.detail-cover-wrap {
+    overflow: hidden;
+    background: var(--cream);
+    border-radius: 16px;
+}
+
+.detail-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+}
+
+.detail-cover-placeholder {
+    display: flex;
+    min-height: 380px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    background: #e8e4d9;
+    text-align: center;
+}
+
+.detail-cover-placeholder[hidden] {
+    display: none;
+}
+
+.detail-cover-placeholder strong {
+    max-width: 250px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.detail-content h1 {
+    margin-bottom: 1rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+}
+
+.detail-author {
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.detail-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0.85rem;
+    background: var(--success-bg);
+    border-radius: 8px;
+    color: #276749;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    flex: 0 0 9px;
+    border-radius: 50%;
+}
+
+.available-dot {
+    background: #2f855a;
+}
+
+.unavailable-dot {
+    background: #a64b42;
+}
+
+.detail-description {
+    margin-top: 2.5rem;
+}
+
+.detail-description h2 {
+    margin-bottom: 0.8rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.detail-description p {
+    color: #475569;
+    line-height: 1.85;
+    white-space: pre-line;
+}
+
+.detail-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-top: 2rem;
+}
+
+.loan-note {
+    margin-bottom: 0.25rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+.btn-unavailable {
+    padding: 0.7rem 1rem;
+    color: #64748b;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    cursor: not-allowed;
+}
+
+.authorized-link {
+    color: var(--sage-dark);
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-underline-offset: 3px;
+}
+
+
+.alert-success {
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: #21633d;
+    background: #e7f4eb;
+}
+
+.alert-error {
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: #9b2929;
+    background: #fbe9e7;
+}
+
+@media (max-width: 767.98px) {
+    .detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+    }
+
+    .detail-cover-wrap {
+        width: min(100%, 300px);
+        margin-inline: auto;
+    }
+
+    .detail-cover-placeholder {
+        min-height: 340px;
+    }
+}

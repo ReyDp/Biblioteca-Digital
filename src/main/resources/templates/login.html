@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión | INGSOFT_8:5</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+<main class="login-container">
+    <a class="back-link" th:href="@{/catalogo}">← Volver al catálogo</a>
+
+    <section class="login-card">
+        <div class="brand-mark">I</div>
+
+        <p class="eyebrow">INGSOFT_8:5 · Biblioteca digital</p>
+        <h1>Qué bueno tenerte aquí</h1>
+        <p class="subtitle">
+            Inicia sesión para solicitar préstamos y consultar tus libros.
+        </p>
+
+        <div class="alert error" th:if="${param.error}">
+            Correo o contraseña incorrectos, o cuenta desactivada.
+        </div>
+
+        <div class="alert success" th:if="${param.logout}">
+            Has cerrado sesión correctamente.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <label for="username">Correo electrónico</label>
+            <input
+                    id="username"
+                    name="username"
+                    type="email"
+                    placeholder="tucorreo@ejemplo.com"
+                    autocomplete="username"
+                    required
+                    autofocus
+            >
+
+            <label for="password">Contraseña</label>
+            <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Escribe tu contraseña"
+                    autocomplete="current-password"
+                    required
+            >
+
+            <button type="submit">Iniciar sesión</button>
+        </form>
+
+        <p class="help-text">
+            ¿Aún no tienes una cuenta? Contacta al administrador de la biblioteca.
+        </p>
+    </section>
+
+    <footer>Tu próxima lectura comienza aquí.</footer>
+</main>
+</body>
+</html>

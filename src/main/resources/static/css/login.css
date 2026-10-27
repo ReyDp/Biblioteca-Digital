@@ -1,0 +1,151 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #203342;
+    background: #f4f2eb;
+}
+
+.login-container {
+    width: min(100% - 32px, 460px);
+    margin: 0 auto;
+    padding: 32px 0;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: #416c5a;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login-card {
+    padding: 36px;
+    background: #fff;
+    border: 1px solid #e5e5dd;
+    border-radius: 18px;
+    box-shadow: 0 12px 36px rgb(32 51 66 / 8%);
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #416c5a;
+    color: #fff;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.eyebrow {
+    margin-top: 25px;
+    color: #416c5a;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin-bottom: 12px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 34px;
+    line-height: 1.15;
+    font-weight: normal;
+}
+
+.subtitle,
+.help-text {
+    color: #687784;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 28px;
+}
+
+label {
+    margin: 16px 0 8px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d8dedb;
+    border-radius: 9px;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: 2px solid #a8c5b4;
+    border-color: #416c5a;
+}
+
+button {
+    margin-top: 25px;
+    padding: 14px;
+    border: none;
+    border-radius: 9px;
+    background: #416c5a;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #315342;
+}
+
+.alert {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.error {
+    background: #fff0ee;
+    color: #a33229;
+}
+
+.success {
+    background: #e9f5ed;
+    color: #286341;
+}
+
+.help-text {
+    margin-top: 24px;
+    text-align: center;
+}
+
+footer {
+    padding-top: 24px;
+    color: #7b858b;
+    font-size: 12px;
+    text-align: center;
+}
+
+@media (max-width: 420px) {
+    .login-card {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 29px;
+    }
+}

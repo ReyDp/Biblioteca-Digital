@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Explora el catálogo de la Biblioteca Digital INGSOFT_8:5">
+    <title>Catálogo | Biblioteca Digital INGSOFT_8:5</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/catalogo.css}">
+</head>
+<body>
+
+<header class="site-header">
+    <nav class="container navbar navbar-expand-lg py-3"
+         aria-label="Navegación principal">
+        <a class="brand" th:href="@{/catalogo}">
+            <span class="brand-icon" aria-hidden="true">B</span>
+            <span>
+                <strong>Biblioteca Digital</strong>
+                <small>INGSOFT_8:5</small>
+            </span>
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#menuPrincipal"
+                aria-controls="menuPrincipal"
+                aria-expanded="false"
+                aria-label="Abrir menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/catalogo}"
+                       aria-current="page">Catálogo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/prestamos}">
+                        Mis préstamos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">
+                        Iniciar sesión
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main class="container py-4 py-lg-5">
+
+    <section class="hero mb-5" aria-labelledby="tituloPrincipal">
+        <div class="hero-content">
+            <p class="eyebrow">TU PRÓXIMA LECTURA COMIENZA AQUÍ</p>
+            <h1 id="tituloPrincipal">Un mundo de ideas te espera.</h1>
+            <p class="hero-description">
+                Explora libros, descubre nuevos temas y continúa
+                aprendiendo a tu ritmo.
+            </p>
+
+            <form class="search-form" th:action="@{/catalogo}" method="get"
+                  role="search">
+                <label class="visually-hidden" for="texto">
+                    Buscar por título o autor
+                </label>
+                <span aria-hidden="true">⌕</span>
+                <input id="texto" name="texto" type="search"
+                       th:value="${texto}"
+                       placeholder="Buscar por título o autor..."
+                       autocomplete="off">
+                <input type="hidden" name="categoriaId"
+                       th:if="${categoriaSeleccionada != null}"
+                       th:value="${categoriaSeleccionada}">
+                <button type="submit" class="btn-primary-custom">
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <section class="mb-5" aria-labelledby="tituloCategorias">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">ENCUENTRA TU TEMA</p>
+                <h2 id="tituloCategorias">Explora por categoría</h2>
+            </div>
+        </div>
+
+        <div class="category-list">
+            <a th:href="@{/catalogo(texto=${texto})}"
+               class="category-chip"
+               th:classappend="${categoriaSeleccionada == null} ? ' selected' : ''"
+               th:attr="aria-current=${categoriaSeleccionada == null} ? 'true' : null">
+                Todas
+            </a>
+
+            <a th:each="categoria : ${categorias}"
+               th:href="@{/catalogo(texto=${texto},categoriaId=${categoria.id})}"
+               class="category-chip"
+               th:classappend="${categoriaSeleccionada != null and categoriaSeleccionada.equals(categoria.id)} ? ' selected' : ''"
+               th:text="${categoria.nombre}"
+               th:attr="aria-current=${categoriaSeleccionada != null and categoriaSeleccionada.equals(categoria.id)} ? 'true' : null">
+                Categoría
+            </a>
+        </div>
+    </section>
+
+    <section aria-labelledby="tituloCatalogo">
+        <div class="section-heading mb-4">
+            <div>
+                <p class="eyebrow">BIBLIOTECA PARA DESCUBRIR</p>
+                <h2 id="tituloCatalogo">Descubre el catálogo</h2>
+                <p class="text-secondary mb-0"
+                   th:text="${#lists.size(libros)} + ' libros encontrados'">
+                    Libros encontrados
+                </p>
+            </div>
+            <a class="text-link" th:href="@{/catalogo}">Limpiar filtros</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(libros)}" class="empty-state">
+            <span class="empty-icon" aria-hidden="true">⌕</span>
+            <h3>No encontramos libros</h3>
+            <p>Prueba con otro título, autor o categoría.</p>
+            <a th:href="@{/catalogo}" class="btn-primary-custom">
+                Ver todo el catálogo
+            </a>
+        </div>
+
+        <div class="book-grid" th:unless="${#lists.isEmpty(libros)}">
+            <article class="book-card" th:each="libro : ${libros}">
+                <a class="cover-link"
+                   th:href="@{/libros/{id}(id=${libro.id})}"
+                   th:attr="aria-label='Ver detalles de ' + ${libro.titulo}">
+
+                    <div
+                            class="book-cover"
+                            th:classappend="${libro.portadaUrl == null or #strings.isEmpty(libro.portadaUrl)} ? ' no-cover' : ''"
+                    >
+                        <img
+                                th:if="${libro.portadaUrl != null and !#strings.isEmpty(libro.portadaUrl)}"
+                                th:src="${libro.portadaUrl}"
+                                th:alt="'Portada de ' + ${libro.titulo}"
+                                loading="lazy"
+                                onerror="this.remove(); this.parentElement.classList.add('no-cover');"
+                        >
+
+                        <div class="cover-placeholder" aria-hidden="true">
+                            <span class="placeholder-brand">INGSOFT_8:5</span>
+                            <span class="placeholder-book">▤</span>
+                            <strong th:text="${libro.titulo}">Título del libro</strong>
+                            <span class="placeholder-author" th:text="${libro.autor}">Autor</span>
+                        </div>
+                    </div>
+
+                </a>
+
+                <div class="book-info">
+                    <span class="book-category"
+                          th:text="${libro.categoria.nombre}">
+                        Categoría
+                    </span>
+
+                    <h3>
+                        <a th:href="@{/libros/{id}(id=${libro.id})}"
+                           th:text="${libro.titulo}">
+                            Título del libro
+                        </a>
+                    </h3>
+
+                    <p class="book-author" th:text="${libro.autor}">
+                        Autor
+                    </p>
+
+                    <p class="availability"
+                       th:classappend="${disponibilidad[libro.id]} ? ' available' : ' unavailable'">
+                        <span aria-hidden="true"
+                              th:text="${disponibilidad[libro.id]} ? '●' : '●'">●</span>
+                        <span th:text="${disponibilidad[libro.id]} ? 'Disponible para préstamo' : 'No disponible temporalmente'">
+                            Estado del libro
+                        </span>
+                    </p>
+
+                    <a class="details-link"
+                       th:href="@{/libros/{id}(id=${libro.id})}">
+                        Ver detalles <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p class="mb-1">Biblioteca Digital INGSOFT_8:5</p>
+        <p class="mb-0">Un espacio para aprender, descubrir y compartir conocimiento.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
