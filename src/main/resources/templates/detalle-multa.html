@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle de multa | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="login-container loans-page">
+    <a class="back-link" th:href="@{/multas}">← Volver a mis multas</a>
+    <section class="login-card loans-card">
+        <p class="eyebrow">DETALLE DE MULTA</p>
+        <h1 th:text="${multa.prestamo.libro.titulo}">Libro</h1>
+        <p>Motivo: devolución posterior a la fecha límite.</p>
+        <dl class="loan-details">
+            <dt>Días de retraso</dt><dd th:text="${multa.diasRetrasoFinales}"></dd>
+            <dt>Valor total</dt><dd th:text="${multa.importeTotal}"></dd>
+            <dt>Saldo pendiente</dt><dd th:text="${saldo}"></dd>
+            <dt>Estado</dt><dd th:text="${multa.estado}"></dd>
+        </dl>
+
+        <div class="alert success" th:if="${mensajeExito}" th:text="${mensajeExito}"></div>
+        <div class="alert error" th:if="${mensajeError}" th:text="${mensajeError}"></div>
+
+        <form th:if="${saldo.compareTo(T(java.math.BigDecimal).ZERO) > 0}"
+              th:action="@{/multas/{id}/pagos(id=${multa.id})}"
+              th:object="${pago}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <label for="valor">Valor a pagar</label>
+            <input id="valor" th:field="*{valor}" type="number" min="0.01" step="0.01" required>
+            <small class="field-error" th:errors="*{valor}"></small>
+            <label for="metodo">Método de pago</label>
+            <input id="metodo" th:field="*{metodo}" type="text" maxlength="40" required>
+            <small class="field-error" th:errors="*{metodo}"></small>
+            <label for="referencia">Referencia (opcional)</label>
+            <input id="referencia" th:field="*{referencia}" type="text" maxlength="100">
+            <small class="field-error" th:errors="*{referencia}"></small>
+            <button type="submit">Registrar pago</button>
+        </form>
+
+        <h2>Historial de pagos</h2>
+        <div class="loan-list" th:if="${!#lists.isEmpty(pagos)}">
+            <div class="loan-item" th:each="pagoRegistrado : ${pagos}">
+                <span th:text="${pagoRegistrado.fechaPago}"></span>
+                <strong th:text="${pagoRegistrado.valorPagado}"></strong>
+                <span th:text="${pagoRegistrado.metodo}"></span>
+                <span th:text="${pagoRegistrado.referencia ?: 'Sin referencia'}"></span>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

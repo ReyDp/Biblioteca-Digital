@@ -245,6 +245,24 @@ Para ejecutar todas las pruebas con Maven Wrapper en Windows:
 .\mvnw.cmd test
 ```
 
+Este comando ejecuta las pruebas unitarias y excluye las pruebas de integración
+etiquetadas como `postgres`. Así el desarrollo cotidiano no requiere una base de
+datos local ni credenciales de PostgreSQL.
+
+Las siguientes pruebas requieren PostgreSQL y usan exclusivamente la base
+`biblioteca_digital_test`: `BibliotecaDigitalApplicationTests`,
+`ConexionPostgresTest` y `PrestamoServiceIntegrationTest`. Para ejecutarlas de
+forma explícita, con PostgreSQL disponible y `DB_PASSWORD` configurada en el
+entorno del proceso, usa:
+
+```powershell
+.\mvnw.cmd -Ppostgres-integration test
+```
+
+La configuración de integración conserva `spring.jpa.hibernate.ddl-auto=create-drop`.
+Por eso nunca debe apuntar a `biblioteca_digital`, que es la base principal de
+desarrollo.
+
 Para ejecutar una clase de prueba concreta:
 
 ```powershell

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administrar libros | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" th:href="@{/css/administracion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="admin-page">
+    <div class="admin-heading">
+        <div>
+            <p class="admin-eyebrow">ADMINISTRACIÓN</p>
+            <h1>Libros</h1>
+            <p class="admin-subtitle">Cada registro representa un ejemplar de la biblioteca.</p>
+        </div>
+        <a class="admin-link" th:href="@{/admin/libros/nuevo}">Registrar libro</a>
+    </div>
+
+    <p class="admin-alert" th:if="${mensajeExito}" th:text="${mensajeExito}"></p>
+
+    <div class="admin-toolbar">
+        <form class="admin-search" th:action="@{/admin/libros}" method="get" role="search">
+            <label class="visually-hidden" for="texto">Buscar libros</label>
+            <input id="texto" name="texto" type="search" th:value="${texto}"
+                   placeholder="Buscar por título o autor">
+            <button class="admin-button" type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <section class="admin-list" aria-label="Libros registrados">
+        <p th:if="${#lists.isEmpty(libros)}">No hay libros que coincidan con la búsqueda.</p>
+        <article class="admin-item" th:each="libro : ${libros}">
+            <div>
+                <h2 th:text="${libro.titulo}">Título</h2>
+                <p><span th:text="${libro.autor}">Autor</span> · <span th:text="${libro.categoria.nombre}">Categoría</span></p>
+                <span class="admin-status"
+                      th:classappend="${disponibilidad[libro.id]} ? ' available' : ' unavailable'"
+                      th:text="${disponibilidad[libro.id]} ? 'Disponible' : 'No disponible'">Disponible</span>
+                <p th:if="${!libro.activo}">Ejemplar inactivo.</p>
+            </div>
+            <a class="admin-edit-link" th:href="@{/admin/libros/{id}/editar(id=${libro.id})}">Editar</a>
+        </article>
+    </section>
+</main>
+</body>
+</html>

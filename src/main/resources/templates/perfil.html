@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="login-container">
+    <a class="back-link" th:href="@{/catalogo}">← Volver al catálogo</a>
+    <section class="login-card">
+        <p class="eyebrow">MI CUENTA</p>
+        <h1>Mi perfil</h1>
+        <p class="subtitle" th:text="${cliente.usuario.correo}">correo@ejemplo.com</p>
+
+        <div class="alert success" th:if="${mensajeExito}" th:text="${mensajeExito}"></div>
+
+        <form th:action="@{/perfil}" th:object="${perfil}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <div class="alert error" th:if="${#fields.hasGlobalErrors()}">
+                <p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+            </div>
+
+            <label for="nombre">Nombre completo</label>
+            <input id="nombre" th:field="*{nombre}" type="text" autocomplete="name" required>
+            <small class="field-error" th:errors="*{nombre}"></small>
+
+            <label for="documento">Documento</label>
+            <input id="documento" th:field="*{documento}" type="text" required>
+            <small class="field-error" th:errors="*{documento}"></small>
+
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" th:field="*{telefono}" type="tel" autocomplete="tel">
+            <small class="field-error" th:errors="*{telefono}"></small>
+
+            <button type="submit">Guardar cambios</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

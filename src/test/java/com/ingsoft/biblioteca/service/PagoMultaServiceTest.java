@@ -127,4 +127,65 @@ class PagoMultaServiceTest {
         verify(multaRepository, never())
                 .buscarPorIdConBloqueo(anyLong());
     }
+
+    @Test
+    void rechazaReferenciaDuplicadaParaLaMismaMulta() {
+        when(multaRepository.buscarPorIdConBloqueo(1L))
+                .thenReturn(Optional.of(multa));
+        when(pagoMultaRepository.sumarPagosPorMulta(1L))
+                .thenReturn(BigDecimal.ZERO);
+        when(pagoMultaRepository.existsByMultaIdAndReferencia(
+                1L, "REF-001")).thenReturn(true);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> pagoService.registrarPago(
+                        1L,
+                        new BigDecimal("1000.00"),
+                        "EFECTIVO",
+                        " REF-001 "
+                )
+        );
+
+        verify(pagoMultaRepository, never()).save(any(PagoMulta.class));
+    }
+
+    @Test
+    void permitePagosParcialesConReferenciasDiferentes() {
+        when(multaRepository.buscarPorIdConBloqueo(1L))
+                .thenReturn(Optional.of(multa));
+        when(pagoMultaRepository.sumarPagosPorMulta(1L))
+                .thenReturn(BigDecimal.ZERO, new BigDecimal("2000.00"));
+        when(pagoMultaRepository.existsByMultaIdAndReferencia(anyLong(), anyString()))
+                .thenReturn(false);
+        when(pagoMultaRepository.save(any(PagoMulta.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        pagoService.registrarPago(1L, new BigDecimal("2000.00"), "EFECTIVO", "REF-001");
+        pagoService.registrarPago(1L, new BigDecimal("2000.00"), "EFECTIVO", "REF-002");
+
+        verify(pagoMultaRepository, times(2)).save(any(PagoMulta.class));
+        assertEquals(EstadoMulta.PARCIAL, multa.getEstado());
+    }
+
+    @Test
+    void permitePagoSinReferenciaSinGarantizarDeduplicacion() {
+        when(multaRepository.buscarPorIdConBloqueo(1L))
+                .thenReturn(Optional.of(multa));
+        when(pagoMultaRepository.sumarPagosPorMulta(1L))
+                .thenReturn(BigDecimal.ZERO);
+        when(pagoMultaRepository.save(any(PagoMulta.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        PagoMulta pago = pagoService.registrarPago(
+                1L,
+                new BigDecimal("1000.00"),
+                "EFECTIVO",
+                "  "
+        );
+
+        assertNull(pago.getReferencia());
+        verify(pagoMultaRepository, never())
+                .existsByMultaIdAndReferencia(anyLong(), anyString());
+    }
 }

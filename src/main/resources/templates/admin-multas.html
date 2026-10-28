@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multas | Administración</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="login-container loans-page">
+    <a class="back-link" th:href="@{/catalogo}">← Volver al catálogo</a>
+    <section class="login-card loans-card">
+        <p class="eyebrow">ADMINISTRACIÓN</p>
+        <h1>Multas registradas</h1>
+        <div class="empty-state" th:if="${#lists.isEmpty(multas)}">No hay multas registradas.</div>
+        <div class="loan-list" th:unless="${#lists.isEmpty(multas)}">
+            <article class="loan-item" th:each="multa : ${multas}">
+                <div>
+                    <h2 th:text="${multa.prestamo.libro.titulo}">Libro</h2>
+                    <p>Cliente: <span th:text="${multa.prestamo.cliente.usuario.nombre}"></span></p>
+                    <p>Valor: <strong th:text="${multa.importeTotal}"></strong></p>
+                </div>
+                <div>
+                    <span class="loan-status" th:text="${multa.estado}">PENDIENTE</span>
+                    <span>Multa #<span th:text="${multa.id}">1</span></span>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel administrativo | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" th:href="@{/css/administracion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="admin-page">
+    <div class="admin-heading">
+        <div>
+            <p class="admin-eyebrow">ADMINISTRACIÓN</p>
+            <h1>Panel general</h1>
+            <p class="admin-subtitle">Resumen del estado actual de la biblioteca.</p>
+        </div>
+    </div>
+
+    <section class="dashboard-grid" aria-label="Indicadores del dashboard">
+
+        <article class="dashboard-card">
+            <header class="dashboard-card-header">
+                <span class="dashboard-card-label">Total de ejemplares</span>
+            </header>
+            <p class="dashboard-card-value" th:text="${stats.totalEjemplares}">0</p>
+            <p class="dashboard-card-help">Ejemplares físicos registrados en el sistema.</p>
+        </article>
+
+        <article class="dashboard-card">
+            <header class="dashboard-card-header">
+                <span class="dashboard-card-label">Ejemplares disponibles</span>
+            </header>
+            <p class="dashboard-card-value" th:text="${stats.ejemplaresDisponibles}">0</p>
+            <p class="dashboard-card-help">Ejemplares activos sin préstamo activo.</p>
+        </article>
+
+        <article class="dashboard-card">
+            <header class="dashboard-card-header">
+                <span class="dashboard-card-label">Ejemplares inactivos</span>
+            </header>
+            <p class="dashboard-card-value" th:text="${stats.ejemplaresInactivos}">0</p>
+            <p class="dashboard-card-help">Ejemplares marcados como inactivos.</p>
+        </article>
+
+        <article class="dashboard-card">
+            <header class="dashboard-card-header">
+                <span class="dashboard-card-label">Préstamos activos</span>
+            </header>
+            <p class="dashboard-card-value" th:text="${stats.prestamosActivos}">0</p>
+            <p class="dashboard-card-help">Ejemplares prestados actualmente.</p>
+        </article>
+
+        <article class="dashboard-card">
+            <header class="dashboard-card-header">
+                <span class="dashboard-card-label">Préstamos vencidos</span>
+            </header>
+            <p class="dashboard-card-value dashboard-card-value--warning" th:text="${stats.prestamosVencidos}">0</p>
+            <p class="dashboard-card-help">Préstamos activos cuya fecha límite ya pasó.</p>
+        </article>
+
+        <article class="dashboard-card">
+            <header class="dashboard-card-header">
+                <span class="dashboard-card-label">Préstamos devueltos</span>
+            </header>
+            <p class="dashboard-card-value" th:text="${stats.prestamosDevueltos}">0</p>
+            <p class="dashboard-card-help">Ejemplares ya devueltos.</p>
+        </article>
+
+        <article class="dashboard-card">
+            <header class="dashboard-card-header">
+                <span class="dashboard-card-label">Multas pendientes</span>
+            </header>
+            <p class="dashboard-card-value dashboard-card-value--warning" th:text="${stats.multasPendientes}">0</p>
+            <p class="dashboard-card-help">Multas con saldo pendiente de pago.</p>
+        </article>
+
+        <article class="dashboard-card">
+            <header class="dashboard-card-header">
+                <span class="dashboard-card-label">Saldo total pendiente</span>
+            </header>
+            <p class="dashboard-card-value dashboard-card-value--danger"
+               th:text="${'$' + #numbers.formatDecimal(stats.saldoTotalPendiente, 1, 2)}">$0</p>
+            <p class="dashboard-card-help">Suma de saldos pendientes de todas las multas.</p>
+        </article>
+
+    </section>
+</main>
+</body>
+</html>

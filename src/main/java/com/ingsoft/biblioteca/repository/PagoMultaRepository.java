@@ -22,4 +22,13 @@ public interface PagoMultaRepository
     );
 
     List<PagoMulta> findByMultaId(Long multaId);
+
+    boolean existsByMultaIdAndReferencia(Long multaId, String referencia);
+
+    @Query("""
+            SELECT COALESCE(SUM(p.valorPagado), 0)
+            FROM PagoMulta p
+            WHERE p.multa.estado != :estadoExcluido
+            """)
+    BigDecimal sumarPagosByMultaEstadoNot(@Param("estadoExcluido") com.ingsoft.biblioteca.entity.EstadoMulta estadoExcluido);
 }

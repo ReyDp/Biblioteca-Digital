@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devoluciones | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="login-container loans-page">
+    <a class="back-link" th:href="@{/catalogo}">← Volver al catálogo</a>
+    <section class="login-card loans-card">
+        <p class="eyebrow">ADMINISTRACIÓN</p>
+        <h1>Devoluciones pendientes</h1>
+        <p class="subtitle">Registra únicamente la devolución física confirmada del libro.</p>
+
+        <div class="alert success" th:if="${mensajeExito}" th:text="${mensajeExito}"></div>
+        <div class="alert error" th:if="${mensajeError}" th:text="${mensajeError}"></div>
+        <div class="empty-state" th:if="${#lists.isEmpty(prestamos)}">
+            No hay préstamos activos pendientes de devolución.
+        </div>
+
+        <div class="loan-list" th:unless="${#lists.isEmpty(prestamos)}">
+            <article class="loan-item" th:each="prestamo : ${prestamos}">
+                <div>
+                    <h2 th:text="${prestamo.libro.titulo}">Título del libro</h2>
+                    <p th:text="${prestamo.cliente.usuario.nombre}">Cliente</p>
+                    <p>Documento: <span th:text="${prestamo.cliente.documento}"></span></p>
+                    <p>Fecha límite: <strong th:text="${prestamo.fechaLimite}"></strong></p>
+                </div>
+                <form th:action="@{/admin/prestamos/{id}/devolucion(id=${prestamo.id})}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button type="submit">Registrar devolución</button>
+                </form>
+            </article>
+        </div>
+    </section>
+</main>
+</body>
+</html>

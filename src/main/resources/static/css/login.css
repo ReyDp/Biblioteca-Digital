@@ -69,6 +69,169 @@ h1 {
     line-height: 1.6;
 }
 
+.field-error {
+    display: block;
+    color: #b42318;
+    margin-top: -0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.82rem;
+}
+
+.help-text a {
+    color: inherit;
+    font-weight: 700;
+}
+
+.loans-page {
+    max-width: 900px;
+}
+
+.loans-card {
+    max-width: 900px;
+}
+
+.loan-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.loan-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #d9dce1;
+    border-radius: 10px;
+}
+
+.loan-item h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.25rem;
+}
+
+.loan-item p {
+    margin: 0.25rem 0;
+}
+
+.loan-status {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.loan-item form {
+    margin: 0;
+}
+
+.loan-details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.75rem 1rem;
+}
+
+.loan-details dt {
+    font-weight: 700;
+}
+
+.loan-details dd {
+    margin: 0;
+}
+
+.multa-section {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #d9dce1;
+    border-radius: 10px;
+    background: #fafaf8;
+}
+
+.multa-label {
+    margin: 0 0 0.75rem;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: #416c5a;
+}
+
+.multa-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #203342;
+    margin-bottom: 0.5rem;
+}
+
+.multa-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #e5e5dd;
+}
+
+.multa-row:last-child {
+    border-bottom: none;
+}
+
+.multa-field {
+    font-size: 14px;
+    color: #687784;
+}
+
+.multa-value {
+    font-size: 14px;
+    font-weight: bold;
+    color: #203342;
+}
+
+.multa-saldo {
+    color: #b42318;
+}
+
+.multa-estado {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.multa-pendiente {
+    background: #fff0ee;
+    color: #a33229;
+}
+
+.multa-parcial {
+    background: #fff8e1;
+    color: #8a6d00;
+}
+
+.multa-pagada {
+    background: #e9f5ed;
+    color: #286341;
+}
+
+.multa-help {
+    margin: 0.5rem 0 0;
+    color: #687784;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.loan-multa {
+    margin-top: 0.5rem;
+}
+
+.multa-indicator {
+    display: inline-block;
+    font-size: 13px;
+    color: #687784;
+}
+
+.multa-estimada {
+    color: #687784;
+}
+
 form {
     display: flex;
     flex-direction: column;

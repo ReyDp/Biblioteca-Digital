@@ -116,6 +116,35 @@ public class PrestamoService {
     public List<Prestamo> listarPrestamosDeCliente(
             Long clienteId
     ) {
-        return prestamoRepository.findByClienteId(clienteId);
+        verificarClienteExiste(clienteId);
+        return prestamoRepository.buscarPorClienteIdConDetalles(clienteId);
+    }
+
+    @Transactional(readOnly = true)
+    public Prestamo obtenerPrestamoDeCliente(
+            Long clienteId,
+            Long prestamoId
+    ) {
+        verificarClienteExiste(clienteId);
+        return prestamoRepository.buscarPorIdYClienteIdConDetalles(
+                        prestamoId,
+                        clienteId
+                )
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No existe un préstamo asociado a tu cuenta."
+                ));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Prestamo> listarPrestamosActivos() {
+        return prestamoRepository.buscarPorEstadoConDetalles(
+                EstadoPrestamo.ACTIVO
+        );
+    }
+
+    private void verificarClienteExiste(Long clienteId) {
+        if (!clienteRepository.existsById(clienteId)) {
+            throw new IllegalArgumentException("El cliente no existe.");
+        }
     }
 }

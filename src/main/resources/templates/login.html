@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión | INGSOFT_8:5</title>
     <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
 </head>
 <body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
 <main class="login-container">
     <a class="back-link" th:href="@{/catalogo}">← Volver al catálogo</a>
 
@@ -53,7 +55,8 @@
         </form>
 
         <p class="help-text">
-            ¿Aún no tienes una cuenta? Contacta al administrador de la biblioteca.
+            ¿Aún no tienes una cuenta?
+            <a th:href="@{/registro}">Regístrate aquí</a>.
         </p>
     </section>
 

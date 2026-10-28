@@ -1,0 +1,256 @@
+.admin-page {
+    width: min(100% - 32px, 1100px);
+    margin: 0 auto;
+    padding: 2.5rem 0;
+    color: #203342;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.admin-heading,
+.admin-toolbar,
+.admin-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.admin-heading {
+    margin-bottom: 1.5rem;
+}
+
+.admin-eyebrow {
+    margin: 0 0 0.3rem;
+    color: #416c5a;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.admin-heading h1,
+.admin-card h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2rem, 4vw, 2.7rem);
+    font-weight: 500;
+}
+
+.admin-subtitle {
+    margin: 0.5rem 0 0;
+    color: #687784;
+}
+
+.admin-button,
+.admin-link {
+    display: inline-block;
+    padding: 0.7rem 1rem;
+    color: #ffffff;
+    background: #416c5a;
+    border: 1px solid #416c5a;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.admin-button:hover,
+.admin-link:hover {
+    color: #ffffff;
+    background: #315342;
+}
+
+.admin-toolbar {
+    margin-bottom: 1rem;
+}
+
+.admin-search {
+    display: flex;
+    flex: 1;
+    gap: 0.6rem;
+}
+
+.admin-search input,
+.admin-field input,
+.admin-field select,
+.admin-field textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #d8dedb;
+    border-radius: 8px;
+    color: #203342;
+    font: inherit;
+}
+
+.admin-search input:focus,
+.admin-field input:focus,
+.admin-field select:focus,
+.admin-field textarea:focus {
+    outline: 3px solid #a8c5b4;
+    outline-offset: 1px;
+}
+
+.admin-list,
+.admin-card {
+    padding: 1.25rem;
+    background: #ffffff;
+    border: 1px solid #e5e5dd;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgb(32 51 66 / 6%);
+}
+
+.admin-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.admin-item {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e5dd;
+}
+
+.admin-item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.admin-item h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.admin-item p {
+    margin: 0.2rem 0 0;
+    color: #687784;
+}
+
+.admin-status {
+    display: inline-block;
+    margin-top: 0.35rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.admin-status.available {
+    color: #21633d;
+    background: #e9f5ed;
+}
+
+.admin-status.unavailable {
+    color: #a33229;
+    background: #fff0ee;
+}
+
+.admin-edit-link {
+    color: #416c5a;
+    font-weight: 700;
+}
+
+.admin-card {
+    max-width: 720px;
+}
+
+.admin-card form {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.admin-field {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.admin-field label {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.admin-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.admin-error {
+    color: #a33229;
+    font-size: 0.85rem;
+}
+
+.admin-alert {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    color: #21633d;
+    background: #e9f5ed;
+    border-radius: 8px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.dashboard-card {
+    padding: 1.25rem;
+    background: #ffffff;
+    border: 1px solid #e5e5dd;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgb(32 51 66 / 6%);
+}
+
+.dashboard-card-header {
+    margin: 0 0 0.75rem;
+}
+
+.dashboard-card-label {
+    display: block;
+    margin: 0 0 0.3rem;
+    color: #416c5a;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.dashboard-card-value {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: #203342;
+}
+
+.dashboard-card-value--warning {
+    color: #8a6d00;
+}
+
+.dashboard-card-value--danger {
+    color: #a33229;
+}
+
+.dashboard-card-help {
+    margin: 0.5rem 0 0;
+    color: #687784;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+    .admin-heading,
+    .admin-toolbar,
+    .admin-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-search {
+        width: 100%;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}

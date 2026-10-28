@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="global-header" th:fragment="principal">
+    <nav class="global-nav container" aria-label="Navegación principal">
+        <a class="global-brand" th:href="@{/catalogo}">
+            <span class="global-brand-icon" aria-hidden="true">B</span>
+            <span>
+                <strong>Biblioteca Digital</strong>
+                <small>INGSOFT_8:5</small>
+            </span>
+        </a>
+
+        <ul class="global-links">
+            <li>
+                <a class="global-link" th:href="@{/catalogo}">Catálogo</a>
+            </li>
+            <li th:if="${!#authorization.expression('isAuthenticated()')}">
+                <a class="global-link" th:href="@{/login}">Iniciar sesión</a>
+            </li>
+            <li th:if="${!#authorization.expression('isAuthenticated()')}">
+                <a class="global-link global-link-emphasis" th:href="@{/registro}">Registrarse</a>
+            </li>
+            <li th:if="${#authorization.expression('isAuthenticated() and hasAuthority(''ROLE_CLIENTE'')')}">
+                <details class="account-menu">
+                    <summary>
+                        <span class="account-name" th:text="${nombreUsuarioAutenticado}">Nombre del cliente</span>
+                        <span class="account-role">Cliente</span>
+                    </summary>
+                    <ul class="account-dropdown">
+                        <li><a th:href="@{/perfil}">Mi perfil</a></li>
+                        <li><a th:href="@{/prestamos}">Mis préstamos</a></li>
+                        <li><a th:href="@{/multas}">Mis multas</a></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="submit">Cerrar sesión</button>
+                            </form>
+                        </li>
+                    </ul>
+                </details>
+            </li>
+            <li th:if="${#authorization.expression('isAuthenticated() and hasAuthority(''ROLE_ADMIN'')')}">
+                <details class="account-menu">
+                    <summary>
+                        <span class="account-name">Administrador del sistema</span>
+                        <span class="account-role">Administrador</span>
+                    </summary>
+                    <ul class="account-dropdown">
+                        <li><a th:href="@{/admin/dashboard}">Panel general</a></li>
+                        <li><a th:href="@{/admin/libros}">Libros</a></li>
+                        <li><a th:href="@{/admin/categorias}">Categorías</a></li>
+                        <li><a th:href="@{/admin/prestamos}">Préstamos y devoluciones</a></li>
+                        <li><a th:href="@{/admin/multas}">Administración de multas</a></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="submit">Cerrar sesión</button>
+                            </form>
+                        </li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+    </nav>
+</header>
+</body>
+</html>

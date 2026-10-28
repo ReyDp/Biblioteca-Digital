@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${categoriaId == null} ? 'Crear categoría | Biblioteca Digital' : 'Editar categoría | Biblioteca Digital'">Categoría</title>
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" th:href="@{/css/administracion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="admin-page">
+    <a class="admin-edit-link" th:href="@{/admin/categorias}">← Volver a categorías</a>
+    <section class="admin-card">
+        <p class="admin-eyebrow">ADMINISTRACIÓN</p>
+        <h1 th:text="${categoriaId == null} ? 'Crear categoría' : 'Editar categoría'">Categoría</h1>
+        <form th:action="${categoriaId == null} ? @{/admin/categorias} : @{/admin/categorias/{id}(id=${categoriaId})}"
+              th:object="${categoria}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="admin-field">
+                <label for="nombre">Nombre</label>
+                <input id="nombre" th:field="*{nombre}" type="text" required>
+                <small class="admin-error" th:errors="*{nombre}"></small>
+            </div>
+            <div class="admin-field">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" th:field="*{descripcion}"></textarea>
+                <small class="admin-error" th:errors="*{descripcion}"></small>
+            </div>
+            <button class="admin-button" type="submit"
+                    th:text="${categoriaId == null} ? 'Crear categoría' : 'Guardar cambios'">Guardar</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

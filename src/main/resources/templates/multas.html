@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis multas | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="login-container loans-page">
+    <a class="back-link" th:href="@{/prestamos}">← Volver a mis préstamos</a>
+    <section class="login-card loans-card">
+        <p class="eyebrow">MI CUENTA</p>
+        <h1>Mis multas</h1>
+        <p class="subtitle">Consulta el motivo, valor y estado de cada multa.</p>
+        <div class="empty-state" th:if="${#lists.isEmpty(multas)}">No tienes multas registradas.</div>
+        <div class="loan-list" th:unless="${#lists.isEmpty(multas)}">
+            <article class="loan-item" th:each="multa : ${multas}">
+                <div>
+                    <h2 th:text="${multa.prestamo.libro.titulo}">Libro</h2>
+                    <p>Días de retraso: <strong th:text="${multa.diasRetrasoFinales}"></strong></p>
+                    <p>Motivo: devolución posterior a la fecha límite.</p>
+                    <p>Valor: <strong th:text="${multa.importeTotal}"></strong></p>
+                </div>
+                <div>
+                    <span class="loan-status" th:text="${multa.estado}">PENDIENTE</span>
+                    <a th:href="@{/multas/{id}(id=${multa.id})}">Ver detalle</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+</body>
+</html>

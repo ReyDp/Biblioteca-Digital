@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle del préstamo | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="login-container loans-page">
+    <a class="back-link" th:href="@{/prestamos}">← Volver a mis préstamos</a>
+    <section class="login-card loans-card">
+        <p class="eyebrow">DETALLE DEL PRÉSTAMO</p>
+        <h1 th:text="${prestamo.libro.titulo}">Título del libro</h1>
+        <p class="subtitle" th:text="${prestamo.libro.autor}">Autor</p>
+
+        <dl class="loan-details">
+            <dt>Estado</dt>
+            <dd th:text="${prestamo.estado}">ACTIVO</dd>
+            <dt>Fecha de préstamo</dt>
+            <dd th:text="${prestamo.fechaPrestamo}"></dd>
+            <dt>Fecha límite</dt>
+            <dd th:text="${prestamo.fechaLimite}"></dd>
+            <dt th:if="${prestamo.fechaDevolucion != null}">Fecha de devolución</dt>
+            <dd th:if="${prestamo.fechaDevolucion != null}" th:text="${prestamo.fechaDevolucion}"></dd>
+        </dl>
+
+        <!-- Multa estimada para préstamo activo -->
+        <div class="multa-section" th:if="${prestamo.estado.name() == 'ACTIVO'}">
+            <p class="multa-label">MULTA ESTIMADA</p>
+            <div class="multa-amount" th:text="${#numbers.formatDecimal(multaEstimada, 1, 2)}">$0.00</div>
+            <p class="multa-help">Calculada a $1.000 COP por día de retraso sobre la fecha límite.</p>
+        </div>
+
+        <!-- Multa definitiva para préstamo devuelto -->
+        <div class="multa-section" th:if="${prestamo.estado.name() == 'DEVUELTO'}" th:with="multaObj=${multa.orElse(null)}">
+            <p class="multa-label">MULTA</p>
+            <div th:if="${multaObj != null}">
+                <div class="multa-row">
+                    <span class="multa-field">Importe total</span>
+                    <span class="multa-value" th:text="${#numbers.formatDecimal(multaObj.importeTotal, 1, 2)}">$0.00</span>
+                </div>
+                <div class="multa-row">
+                    <span class="multa-field">Días de retraso</span>
+                    <span class="multa-value" th:text="${multaObj.diasRetrasoFinales}">0</span>
+                </div>
+                <div class="multa-row">
+                    <span class="multa-field">Estado</span>
+                    <span class="multa-estado"
+                          th:classappend="${multaObj.estado.name() == 'PAGADA' ? 'multa-pagada' : (multaObj.estado.name() == 'PARCIAL' ? 'multa-parcial' : 'multa-pendiente')}"
+                          th:text="${multaObj.estado}">PENDIENTE</span>
+                </div>
+                <div class="multa-row" th:if="${multaObj.estado.name() != 'PAGADA'}">
+                    <span class="multa-field">Saldo pendiente</span>
+                    <span class="multa-value multa-saldo"
+                          th:text="${#numbers.formatDecimal(pagoMultaService.consultarSaldoPendiente(multaObj.id), 1, 2)}">$0.00</span>
+                </div>
+                <div class="multa-row" th:if="${multaObj.estado.name() == 'PAGADA'}">
+                    <span class="multa-field">Saldo pendiente</span>
+                    <span class="multa-value">$0.00</span>
+                </div>
+            </div>
+            <div th:if="${multaObj == null}">
+                <p class="multa-help">No se ha registrado una multa para este préstamo.</p>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

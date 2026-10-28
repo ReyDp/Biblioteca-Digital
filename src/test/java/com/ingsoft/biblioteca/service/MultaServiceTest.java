@@ -194,6 +194,69 @@ class MultaServiceTest {
     }
 
 
+    @Test
+    void obtenerMultaPorPrestamoIdDevuelveLaMultaExistente() {
+        Multa multa = new Multa();
+        org.springframework.test.util.ReflectionTestUtils.setField(multa, "id", 1L);
+        multa.setImporteTotal(new BigDecimal("3000.00"));
+        multa.setDiasRetrasoFinales(3);
+        multa.setEstado(EstadoMulta.PENDIENTE);
+
+        when(multaRepository.findByPrestamoId(10L))
+                .thenReturn(Optional.of(multa));
+
+        Optional<Multa> resultado = multaService.obtenerMultaPorPrestamoId(10L);
+
+        assertTrue(resultado.isPresent());
+        assertSame(multa, resultado.get());
+        assertEquals(new BigDecimal("3000.00"), resultado.get().getImporteTotal());
+        assertEquals(EstadoMulta.PENDIENTE, resultado.get().getEstado());
+        verify(multaRepository).findByPrestamoId(10L);
+    }
+
+    @Test
+    void obtenerMultaPorPrestamoIdDevuelveVacioCuandoNoExiste() {
+        when(multaRepository.findByPrestamoId(99L))
+                .thenReturn(Optional.empty());
+
+        Optional<Multa> resultado = multaService.obtenerMultaPorPrestamoId(99L);
+
+        assertTrue(resultado.isEmpty());
+        verify(multaRepository).findByPrestamoId(99L);
+    }
+
+    @Test
+    void rechazaConsultarMultaDeOtroCliente() {
+        when(multaRepository.buscarPorIdYClienteIdConDetalles(10L, 1L))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> multaService.obtenerMultaDeCliente(1L, 10L)
+        );
+
+        verify(multaRepository).buscarPorIdYClienteIdConDetalles(10L, 1L);
+    }
+
+    @Test
+    void devuelveLaMultaCuandoPerteneceAlCliente() {
+        Prestamo prestamo = crearPrestamo(LocalDate.of(2026, 11, 16));
+        Multa multa = new Multa();
+        org.springframework.test.util.ReflectionTestUtils.setField(multa, "id", 10L);
+        multa.setPrestamo(prestamo);
+        multa.setImporteTotal(new BigDecimal("3000.00"));
+        multa.setEstado(EstadoMulta.PENDIENTE);
+
+        when(multaRepository.buscarPorIdYClienteIdConDetalles(10L, 1L))
+                .thenReturn(Optional.of(multa));
+
+        Multa resultado = multaService.obtenerMultaDeCliente(1L, 10L);
+
+        assertSame(multa, resultado);
+        assertEquals(new BigDecimal("3000.00"), resultado.getImporteTotal());
+        verify(multaRepository).buscarPorIdYClienteIdConDetalles(10L, 1L);
+    }
+
     private Prestamo crearPrestamo(LocalDate fechaLimite) {
         Prestamo prestamo = new Prestamo();
         prestamo.setFechaLimite(fechaLimite);

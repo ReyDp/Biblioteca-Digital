@@ -70,14 +70,29 @@ public class PagoMultaService {
             );
         }
 
+        String referenciaNormalizada = referencia == null
+                ? null
+                : referencia.trim();
+
+        if (referenciaNormalizada != null
+                && !referenciaNormalizada.isEmpty()
+                && pagoMultaRepository.existsByMultaIdAndReferencia(
+                multaId,
+                referenciaNormalizada
+        )) {
+            throw new IllegalArgumentException(
+                    "La referencia ya fue registrada para esta multa."
+            );
+        }
+
         PagoMulta pago = new PagoMulta();
         pago.setMulta(multa);
         pago.setValorPagado(valor);
         pago.setMetodo(metodo.trim());
         pago.setReferencia(
-                referencia == null || referencia.isBlank()
+                referenciaNormalizada == null || referenciaNormalizada.isEmpty()
                         ? null
-                        : referencia.trim()
+                        : referenciaNormalizada
         );
 
         PagoMulta pagoGuardado = pagoMultaRepository.save(pago);

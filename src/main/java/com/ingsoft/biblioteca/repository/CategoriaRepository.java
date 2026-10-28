@@ -11,4 +11,6 @@ public interface CategoriaRepository
     Optional<Categoria> findByNombreIgnoreCase(String nombre);
 
     boolean existsByNombreIgnoreCase(String nombre);
+
+    java.util.List<Categoria> findAllByOrderByNombreAsc();
 }

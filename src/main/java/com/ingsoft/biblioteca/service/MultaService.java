@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MultaService {
@@ -101,5 +103,31 @@ public class MultaService {
                 prestamo,
                 LocalDate.now()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<Multa> listarMultasDeCliente(Long clienteId) {
+        return multaRepository.buscarPorClienteIdConDetalles(clienteId);
+    }
+
+    @Transactional(readOnly = true)
+    public Multa obtenerMultaDeCliente(Long clienteId, Long multaId) {
+        return multaRepository.buscarPorIdYClienteIdConDetalles(
+                        multaId,
+                        clienteId
+                )
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "La multa no pertenece a tu cuenta."
+                ));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Multa> listarTodas() {
+        return multaRepository.buscarTodasConDetalles();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Multa> obtenerMultaPorPrestamoId(Long prestamoId) {
+        return multaRepository.findByPrestamoId(prestamoId);
     }
 }

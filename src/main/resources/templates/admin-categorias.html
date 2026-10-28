@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administrar categorías | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" th:href="@{/css/administracion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="admin-page">
+    <div class="admin-heading">
+        <div>
+            <p class="admin-eyebrow">ADMINISTRACIÓN</p>
+            <h1>Categorías</h1>
+            <p class="admin-subtitle">Organiza los ejemplares sin modificar sus relaciones existentes.</p>
+        </div>
+        <a class="admin-link" th:href="@{/admin/categorias/nueva}">Crear categoría</a>
+    </div>
+
+    <p class="admin-alert" th:if="${mensajeExito}" th:text="${mensajeExito}"></p>
+
+    <section class="admin-list" aria-label="Categorías registradas">
+        <p th:if="${#lists.isEmpty(categorias)}">No hay categorías registradas.</p>
+        <article class="admin-item" th:each="categoria : ${categorias}">
+            <div>
+                <h2 th:text="${categoria.nombre}">Categoría</h2>
+                <p th:text="${categoria.descripcion ?: 'Sin descripción'}">Descripción</p>
+            </div>
+            <a class="admin-edit-link" th:href="@{/admin/categorias/{id}/editar(id=${categoria.id})}">Editar</a>
+        </article>
+    </section>
+</main>
+</body>
+</html>

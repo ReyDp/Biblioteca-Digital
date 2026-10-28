@@ -204,5 +204,45 @@ class PrestamoServiceTest {
         );
     }
 
+    @Test
+    void listaSoloLosPrestamosDelClienteSolicitado() {
+        Prestamo prestamo = new Prestamo();
+        when(clienteRepository.existsById(1L)).thenReturn(true);
+        when(prestamoRepository.buscarPorClienteIdConDetalles(1L))
+                .thenReturn(java.util.List.of(prestamo));
+
+        assertEquals(
+                java.util.List.of(prestamo),
+                prestamoService.listarPrestamosDeCliente(1L)
+        );
+
+        verify(prestamoRepository).buscarPorClienteIdConDetalles(1L);
+    }
+
+    @Test
+    void rechazaConsultarPrestamoDeOtroCliente() {
+        when(clienteRepository.existsById(1L)).thenReturn(true);
+        when(prestamoRepository.buscarPorIdYClienteIdConDetalles(9L, 1L))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> prestamoService.obtenerPrestamoDeCliente(1L, 9L)
+        );
+    }
+
+    @Test
+    void listaPrestamosActivosParaAdministracion() {
+        Prestamo prestamo = new Prestamo();
+        when(prestamoRepository.buscarPorEstadoConDetalles(
+                EstadoPrestamo.ACTIVO
+        )).thenReturn(java.util.List.of(prestamo));
+
+        assertEquals(
+                java.util.List.of(prestamo),
+                prestamoService.listarPrestamosActivos()
+        );
+    }
+
 
 }

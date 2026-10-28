@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis préstamos | Biblioteca Digital</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="login-container loans-page">
+    <a class="back-link" th:href="@{/catalogo}">← Volver al catálogo</a>
+    <section class="login-card loans-card">
+        <p class="eyebrow">MI CUENTA</p>
+        <h1>Mis préstamos</h1>
+        <p class="subtitle">Consulta el estado y las fechas de tus libros.</p>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(prestamos)}">
+            No tienes préstamos registrados todavía.
+        </div>
+
+        <div class="loan-list" th:unless="${#lists.isEmpty(prestamos)}">
+            <article class="loan-item" th:each="prestamo : ${prestamos}">
+                <div>
+                    <h2 th:text="${prestamo.libro.titulo}">Título del libro</h2>
+                    <p th:text="${prestamo.libro.autor}">Autor</p>
+                    <p>Solicitado: <strong th:text="${prestamo.fechaPrestamo}"></strong></p>
+                    <p th:if="${prestamo.estado.name() == 'ACTIVO'}">
+                        Fecha límite: <strong th:text="${prestamo.fechaLimite}"></strong>
+                    </p>
+                    <p th:if="${prestamo.estado.name() == 'DEVUELTO'}">
+                        Devuelto: <strong th:text="${prestamo.fechaDevolucion}"></strong>
+                    </p>
+                    <!-- Indicador de multa -->
+                    <div class="loan-multa" th:with="multaObj=${multaService.obtenerMultaPorPrestamoId(prestamo.id).orElse(null)}">
+                        <!-- Préstamo activo: multa estimada -->
+                        <span th:if="${prestamo.estado.name() == 'ACTIVO'}"
+                              class="multa-indicator multa-estimada"
+                              th:with="estimada=${multaService.consultarMultaEstimada(prestamo)}">
+                            Multa estimada: <strong th:text="${#numbers.formatDecimal(estimada, 1, 2)}">$0.00</strong>
+                        </span>
+                        <!-- Préstamo devuelto con multa -->
+                        <span th:if="${prestamo.estado.name() == 'DEVUELTO' && multaObj != null}"
+                              class="multa-indicator"
+                              th:classappend="${multaObj.estado.name() == 'PAGADA' ? 'multa-pagada' : (multaObj.estado.name() == 'PARCIAL' ? 'multa-parcial' : 'multa-pendiente')}">
+                            Multa: <strong th:text="${#numbers.formatDecimal(multaObj.importeTotal, 1, 2)}">$0.00</strong>
+                            (<span th:text="${multaObj.estado}">PENDIENTE</span>)
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <span class="loan-status" th:text="${prestamo.estado}">ACTIVO</span>
+                    <a th:href="@{/prestamos/{id}(id=${prestamo.id})}">Ver detalle</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+</body>
+</html>

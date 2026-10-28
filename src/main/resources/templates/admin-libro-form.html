@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${libroId == null} ? 'Registrar libro | Biblioteca Digital' : 'Editar libro | Biblioteca Digital'">Libro</title>
+    <link rel="stylesheet" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" th:href="@{/css/administracion.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navegacion :: principal}"></div>
+<main class="admin-page">
+    <a class="admin-edit-link" th:href="@{/admin/libros}">← Volver a libros</a>
+    <section class="admin-card">
+        <p class="admin-eyebrow">ADMINISTRACIÓN</p>
+        <h1 th:text="${libroId == null} ? 'Registrar libro' : 'Editar libro'">Libro</h1>
+        <form th:action="${libroId == null} ? @{/admin/libros} : @{/admin/libros/{id}(id=${libroId})}"
+              th:object="${libro}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="admin-error" th:if="${#fields.hasGlobalErrors()}">
+                <p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
+            </div>
+            <div class="admin-field">
+                <label for="titulo">Título</label>
+                <input id="titulo" th:field="*{titulo}" type="text" required>
+                <small class="admin-error" th:errors="*{titulo}"></small>
+            </div>
+            <div class="admin-field">
+                <label for="autor">Autor</label>
+                <input id="autor" th:field="*{autor}" type="text" required>
+                <small class="admin-error" th:errors="*{autor}"></small>
+            </div>
+            <div class="admin-field">
+                <label for="categoriaId">Categoría</label>
+                <select id="categoriaId" th:field="*{categoriaId}" required>
+                    <option value="">Selecciona una categoría</option>
+                    <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                            th:text="${categoria.nombre}">Categoría</option>
+                </select>
+                <small class="admin-error" th:errors="*{categoriaId}"></small>
+            </div>
+            <div class="admin-field">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" th:field="*{descripcion}"></textarea>
+            </div>
+            <div class="admin-field">
+                <label for="portadaUrl">URL de portada</label>
+                <input id="portadaUrl" th:field="*{portadaUrl}" type="text">
+                <small class="admin-error" th:errors="*{portadaUrl}"></small>
+            </div>
+            <div class="admin-field">
+                <label for="archivoUrl">URL del recurso digital</label>
+                <input id="archivoUrl" th:field="*{archivoUrl}" type="text">
+                <small class="admin-error" th:errors="*{archivoUrl}"></small>
+            </div>
+            <button class="admin-button" type="submit"
+                    th:text="${libroId == null} ? 'Registrar libro' : 'Guardar cambios'">Guardar</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

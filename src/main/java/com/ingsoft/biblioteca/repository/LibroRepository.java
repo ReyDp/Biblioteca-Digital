@@ -61,4 +61,21 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
             @Param("categoriaId") Long categoriaId
     );
 
+    @Query("""
+    SELECT l
+    FROM Libro l
+    JOIN FETCH l.categoria
+    WHERE :texto = ''
+       OR LOWER(l.titulo) LIKE CONCAT('%', LOWER(:texto), '%')
+       OR LOWER(l.autor) LIKE CONCAT('%', LOWER(:texto), '%')
+    ORDER BY l.titulo ASC
+    """)
+    List<Libro> buscarParaAdministracion(@Param("texto") String texto);
+
+    long countByActivoTrue();
+
+    long countByActivoFalse();
+
+    boolean existsByCategoriaId(Long categoriaId);
+
 }

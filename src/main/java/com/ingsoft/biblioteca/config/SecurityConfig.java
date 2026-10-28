@@ -31,8 +31,15 @@ public class SecurityConfig {
                                 "/libros/**",
                                 "/css/**",
                                 "/images/**",
-                                "/login"
+                                "/login",
+                                "/registro"
                         ).permitAll()
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/multas/**")
+                        .hasRole("CLIENTE")
+                        .requestMatchers("/perfil/**", "/prestamos/**")
+                        .hasRole("CLIENTE")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
