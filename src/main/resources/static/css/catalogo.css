@@ -313,13 +313,14 @@ input:focus-visible {
     border-radius: var(--radius);
 }
 
-/* Las imágenes mantienen su proporción original */
+/* Las imágenes llenan el contenedor manteniendo la proporción */
 
 .book-cover > img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: top center;
     transition: transform 220ms ease;
 }
 
@@ -327,26 +328,10 @@ input:focus-visible {
     transform: scale(1.025);
 }
 
-/* Portada alternativa */
+/* Portada alternativa — oculta por defecto */
 
 .cover-placeholder {
-    display: flex;
-    width: 76%;
-    min-height: 78%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    gap: 0.75rem;
-    padding: 1rem;
-    color: var(--ink);
-    background: #f8f6f0;
-    border: 1px solid #d2cabb;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.cover-placeholder[hidden] {
-    display: none !important;
+    display: none;
 }
 
 /* Si la imagen falla, se muestra el respaldo */
@@ -356,29 +341,37 @@ input:focus-visible {
     width: 100%;
     height: 100%;
     min-height: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
     border: 0;
     border-radius: var(--radius);
-    background: #f3f0e9;
+    background: var(--cream);
+    text-align: center;
 }
 
-.placeholder-brand,
-.cover-placeholder > span:first-child {
-    color: var(--sage-dark);
-    font-size: 0.65rem;
-    font-weight: 750;
-    letter-spacing: 0.14em;
+.placeholder-brand {
+    color: var(--sage);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
 }
 
 .placeholder-book {
     color: var(--sage);
-    font-size: 2.8rem;
+    font-size: 2.4rem;
     line-height: 1;
+    opacity: 0.6;
 }
 
-.cover-placeholder strong {
+.book-cover.no-cover .cover-placeholder strong {
     max-width: 100%;
+    color: var(--ink);
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(0.9rem, 1.4vw, 1.2rem);
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
     font-weight: 500;
     line-height: 1.35;
     overflow-wrap: anywhere;
@@ -386,7 +379,7 @@ input:focus-visible {
 
 .placeholder-author {
     color: var(--muted);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
 }
 
 /* 9. INFORMACIÓN DE CADA LIBRO */

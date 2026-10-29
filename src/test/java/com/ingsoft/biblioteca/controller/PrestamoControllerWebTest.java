@@ -306,7 +306,7 @@ class PrestamoControllerWebTest {
                         .with(user("cliente@example.com").roles("CLIENTE")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("prestamos"))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Multa:")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Multa")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("3000.00")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("PENDIENTE")));
     }
