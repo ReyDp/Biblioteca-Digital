@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: prestamos-service
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:prestamos_db}
+    username: ${DB_USERNAME:prestamos}
+    password: ${DB_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+outbox:
+  publisher:
+    url: ${OUTBOX_PUBLISHER_URL:}
+    poll-interval: ${OUTBOX_PUBLISHER_POLL_INTERVAL:PT10S}
+    batch-size: ${OUTBOX_PUBLISHER_BATCH_SIZE:20}
+    http-timeout: ${OUTBOX_PUBLISHER_HTTP_TIMEOUT:PT5S}
+    max-attempts: ${OUTBOX_PUBLISHER_MAX_ATTEMPTS:8}
+    initial-backoff: ${OUTBOX_PUBLISHER_INITIAL_BACKOFF:PT5S}
+    max-backoff: ${OUTBOX_PUBLISHER_MAX_BACKOFF:PT5M}
+    lease-duration: ${OUTBOX_PUBLISHER_LEASE_DURATION:PT1M}
+    jwt-private-key-location: ${OUTBOX_PUBLISHER_JWT_PRIVATE_KEY_LOCATION:}
+    jwt-issuer: ${OUTBOX_PUBLISHER_JWT_ISSUER:prestamos-service}
+    jwt-audience: ${OUTBOX_PUBLISHER_JWT_AUDIENCE:biblioteca-digital}
+    jwt-lifetime: ${OUTBOX_PUBLISHER_JWT_LIFETIME:PT5M}
+
+jwt:
+  public-key-location: ${JWT_PUBLIC_KEY_LOCATION:}
+  issuer: ${JWT_ISSUER:}
+  audience: ${JWT_AUDIENCE:prestamos-service}
+
+biblioteca:
+  digital:
+    url: ${BIBLIOTECA_DIGITAL_URL:}
+    service-jwt:
+      private-key-location: ${BIBLIOTECA_DIGITAL_SERVICE_JWT_PRIVATE_KEY_LOCATION:}
+      issuer: ${BIBLIOTECA_DIGITAL_SERVICE_JWT_ISSUER:prestamos-service}
+      audience: ${BIBLIOTECA_DIGITAL_SERVICE_JWT_AUDIENCE:biblioteca-digital}
+      lifetime: ${BIBLIOTECA_DIGITAL_SERVICE_JWT_LIFETIME:PT5M}
