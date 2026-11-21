@@ -41,3 +41,20 @@ build/
 application-local.properties
 application-dev.properties
 application-prod.properties
+# Archivos compilados Java
+*.class
+
+# Archivos de recuperación del microservicio
+/prestamos-service/recuperacion/
+
+# Resumen temporal de recuperación
+/prestamos-service/src/main/java/summary.txt
+
+# Archivos compilados Java
+*.class
+
+# Archivos de recuperación del microservicio
+/prestamos-service/recuperacion/
+
+# Resumen temporal de recuperación
+/prestamos-service/src/main/java/summary.txt
